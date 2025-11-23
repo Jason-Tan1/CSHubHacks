@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import image from '../images/image.png'
 
 function Home() {
   const [images, setImages] = useState([])
@@ -12,7 +13,7 @@ function Home() {
     if (files.length > 0) {
       const newImages = [...images, ...files]
       setImages(newImages)
-      
+
       // Read all files and create previews
       files.forEach(file => {
         const reader = new FileReader()
@@ -27,11 +28,11 @@ function Home() {
   const handleDrop = (e) => {
     e.preventDefault()
     const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'))
-    
+
     if (files.length > 0) {
       const newImages = [...images, ...files]
       setImages(newImages)
-      
+
       files.forEach(file => {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -97,7 +98,7 @@ function Home() {
             <span className="step-icon">📷</span>
             <h3>1. Evidence</h3>
           </div>
-          <div 
+          <div
             className="upload-area"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
@@ -108,7 +109,7 @@ function Home() {
                 {imagePreviews.map((preview, index) => (
                   <div key={index} className="image-preview-item">
                     <img src={preview} alt={`Preview ${index + 1}`} />
-                    <button 
+                    <button
                       className="remove-image"
                       onClick={(e) => {
                         e.stopPropagation()
@@ -126,9 +127,12 @@ function Home() {
               </div>
             ) : (
               <>
-                <div className="camera-icon">📷</div>
+                <div className="camera-icon" >
+                  <img src={image} alt="Camera" height="40" width="40" />
+                </div>
                 <p className="upload-text">Take Photos or Upload</p>
                 <p className="upload-subtext">Supports JPG, PNG (Multiple files)</p>
+
               </>
             )}
             <input
@@ -179,7 +183,7 @@ function Home() {
         </div>
 
         {/* Scan Button */}
-        <button 
+        <button
           className={`scan-button ${canRunScan ? 'active' : 'disabled'}`}
           onClick={handleRunScan}
           disabled={!canRunScan || isScanning}
@@ -192,7 +196,7 @@ function Home() {
           <p className="upload-reminder">✓ {images.length} image{images.length > 1 ? 's' : ''} uploaded</p>
         )}
       </div>
-    </main>
+    </main >
   )
 }
 
