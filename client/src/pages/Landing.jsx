@@ -35,6 +35,11 @@ export default function Landing() {
           <h3>Find Legal Support</h3>
           <p>Locate nearby legal aid clinics on an interactive map with contact details and directions.</p>
         </div>
+        <div className="feature-card">
+          <div className="feature-icon">💬</div>
+          <h3>Get Personalized Help</h3>
+          <p>Share details about your situation to receive tailored guidance, letter templates, and local resources to help you take the next steps.</p>
+        </div>
       </div>
     </main>
   )

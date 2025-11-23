@@ -301,6 +301,8 @@ function Home({ currentUser }) {
           />
         </div>
 
+        {/* (Removed) Additional Info Section */}
+
         {/* Location Section */}
         <div className="form-section">
           <div className="section-header">
