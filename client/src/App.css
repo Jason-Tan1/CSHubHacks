@@ -252,7 +252,7 @@
   font-family: inherit;
   font-size: 0.95rem;
   resize: vertical;
-  background: #1a1a1a;
+  background: #f8fafc;
   color: #e2e8f0;
   transition: border-color 0.3s ease;
 }
@@ -277,7 +277,7 @@
 .location-input {
   width: 100%;
   padding: 0.875rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #f8fafc;
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
