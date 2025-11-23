@@ -2,6 +2,7 @@ import './App.css'
 import Header from './components/Header'
 import Home from './pages/Home'
 import Signup from './pages/Signup'
+import Landing from './pages/Landing'
 import { useState } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 
@@ -16,7 +17,7 @@ function App() {
     setUser({ fullName: userWithLocation.fullName, address: userWithLocation.address })
     setSelectedLocation(userWithLocation.location || null)
     setSignedUp(true)
-    navigate('/')
+    navigate('/app')
   }
 
   const location = useLocation()
@@ -25,8 +26,10 @@ function App() {
     <div className="app">
       {location.pathname !== '/signup' && <Header />}
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup onSignup={handleSignup} />} />
-        <Route path="/" element={signedUp ? <Home user={user} initialLocation={selectedLocation} /> : <Navigate to="/signup" replace />} />
+        <Route path="/app" element={signedUp ? <Home user={user} initialLocation={selectedLocation} /> : <Navigate to="/signup" replace />} />
+        <Route path="/home" element={signedUp ? <Home user={user} initialLocation={selectedLocation} /> : <Navigate to="/signup" replace />} />
       </Routes>
     </div>
   )
