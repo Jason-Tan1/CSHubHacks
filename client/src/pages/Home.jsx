@@ -216,11 +216,14 @@ function Home() {
   return (
     <main className="main-content">
       <div className="hero-section">
-        <h2>Identify violations.</h2>
-        <h2>Know your rights.</h2>
-        <p className="subtitle">
-          Take a photo of mold, pests, leaks, or damage. Our AI will scan it,
-          identify legal violations, and tell you exactly what to do.
+        <p className="hero-badge">Powered by Gemini</p>
+        <h1 className="hero-title">
+          Identify violations.
+          <span>Know your rights.</span>
+        </h1>
+        <p className="hero-description">
+          Take a photo of mold, pests, leaks, or damage. Our AI will scan it, cite local laws,
+          and draft a legal notice for you.
         </p>
       </div>
 

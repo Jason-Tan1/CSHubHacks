@@ -48,17 +48,35 @@ app.post('/api/analyze', async (req, res) => {
   const prompt = `You are a housing safety and tenant-rights expert. Review the images and return JSON only. Do not add explanations or code fences.
 Required JSON shape:
 {
-  "summary": "brief plain-language finding under 120 words",
-  "rights_summary": "what the tenant's rights are in this location",
-  "applicable_laws": ["statute or code", "..."],
-  "actions": ["clear steps for tenant", "..."],
-  "landlord_message": "short draft to the landlord",
-  "documentation": "what to document and how",
-  "evidence_checklist": ["photo or note items to collect", "..."],
+  "summary": "200–250 word plain-language explanation of what the image likely shows, possible hazards, health concerns, and urgency. If unclear, list possible interpretations.",
+  
+  "rights_summary": "Key tenant rights in the user's city/state: habitability rules, repair timelines, anti-retaliation protections, emergency repair options, landlord entry rules. Keep it simple and clear.",
+  
+  "applicable_laws": [
+    "List main statutes or codes that commonly apply to this issue in the user's location. Briefly say why each law matters."
+  ],
+  
+  "actions": [
+    "List 5–8 practical steps for the tenant. Focus on: what to do now, how to request repairs, when to escalate, and how to protect themselves from retaliation."
+  ],
+  
+  "landlord_message": "Short, polite message describing the issue, referencing the housing standard, and requesting a repair timeline.",
+  
+  "documentation": "Explain what to record: photos (angles + close-ups), timestamps, notes about when issue started or worsened, communication logs, receipts, and health symptoms if relevant.",
+  
+  "evidence_checklist": [
+    "Wide + close-up photos",
+    "Location/context shot",
+    "Video if issue is active (dripping, sparking, pests)",
+    "Measurements (size, spread)",
+    "Timeline notes"
+  ],
+  
   "clinic_links": [
-    {"name": "clinic or hotline", "link": "https://www.google.com/maps/search/legal+aid+clinic+<city or zip>"}
+    {"name": "Nearest legal aid or tenant clinic", "link": "https://www.google.com/maps/search/legal+aid+clinic+<city_or_zip>"}
   ]
 }
+
 Location context: ${location || 'No location given.'}
 Tenant notes: ${details || 'No additional details provided.'}
 If you are unsure of exact laws, provide the best general housing safety laws for the given location. Keep lists concise.`;
