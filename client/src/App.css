@@ -260,7 +260,7 @@
 .details-input:focus {
   outline: none;
   border-color: #3B82F6;
-  background: #2a2a2a;
+  background: #f8fafc;
 }
 
 .details-input::placeholder {
@@ -283,6 +283,7 @@
   font-size: 0.95rem;
   margin-bottom: 0.75rem;
   transition: border-color 0.3s ease;
+  background: #f8fafc
 }
 
 .location-input:focus {
