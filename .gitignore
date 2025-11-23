@@ -24,11 +24,26 @@ build/
 # Environment Variables
 .env
 .env.local
+.env.production
+server/.env
 
 # Logs
 *.log
 logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Temporary Files
 *.tmp
 temp/
+
+# Vite
+.vite
+*.local
+
+# Production
+/client/dist
+/server/dist
