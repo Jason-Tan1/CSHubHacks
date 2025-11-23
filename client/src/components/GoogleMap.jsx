@@ -57,9 +57,26 @@ function GoogleMap({ location, legalClinics = [] }) {
           }
         }
 
-        // Add user or center pin
+        // Add user or center pin. Blue user marker will use a circular icon with a house emoji label.
         if (userPos) {
-          new window.google.maps.Marker({ position: userPos, map, title: 'Your Location', icon: makePinIcon('#4285F4', 40) })
+          new window.google.maps.Marker({
+            position: userPos,
+            map,
+            title: 'Your Location',
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: 16,
+              fillColor: '#4285F4',
+              fillOpacity: 1,
+              strokeColor: '#ffffff',
+              strokeWeight: 2,
+            },
+            label: {
+              text: '🏠',
+              color: '#ffffff',
+              fontSize: '14px',
+            },
+          })
         } else {
           new window.google.maps.Marker({ position: center, map, title: 'Search Location', icon: makePinIcon('#34A853', 36) })
         }
@@ -118,7 +135,8 @@ function GoogleMap({ location, legalClinics = [] }) {
           const lat = typeof place.geometry.location.lat === 'function' ? place.geometry.location.lat() : place.geometry.location.lat
           const lng = typeof place.geometry.location.lng === 'function' ? place.geometry.location.lng() : place.geometry.location.lng
           const pos = { lat, lng }
-          const marker = new window.google.maps.Marker({ position: pos, map, title: place.name, label: { text: String(index + 1), color: '#fff' }, icon: { path: window.google.maps.SymbolPath.CIRCLE, scale: 12, fillColor: '#EA4335', fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2 } })
+          // Use the teardrop pin SVG icon (red) instead of a numbered circle label
+          const marker = new window.google.maps.Marker({ position: pos, map, title: place.name, icon: makePinIcon('#EA4335', 36) })
 
           const infowindow = new window.google.maps.InfoWindow({ content: `
                 <div style="padding:8px; max-width:240px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
