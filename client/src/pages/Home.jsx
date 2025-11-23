@@ -94,7 +94,6 @@ function Home() {
         {/* Evidence Section */}
         <div className="form-section">
           <div className="section-header">
-            <span className="step-icon">📷</span>
             <h3>1. Evidence</h3>
           </div>
           <div 
@@ -145,7 +144,6 @@ function Home() {
         {/* Details Section */}
         <div className="form-section">
           <div className="section-header">
-            <span className="step-icon">📝</span>
             <h3>2. Details</h3>
           </div>
           <textarea
@@ -160,7 +158,6 @@ function Home() {
         {/* Location Section */}
         <div className="form-section">
           <div className="section-header">
-            <span className="step-icon">📍</span>
             <h3>3. Location</h3>
           </div>
           <p className="location-hint">
