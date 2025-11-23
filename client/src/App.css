@@ -15,7 +15,7 @@
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -58,6 +58,37 @@
   font-size: 0.75rem;
   color: #666;
   margin: 0;
+}
+
+.header-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav a {
+  color: #1f2937;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header-actions .ghost-button,
+.header-actions .primary-button {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  color: #0f172a;
+  text-decoration: none;
+  background: white;
+}
+
+.header-actions .ghost-button:hover,
+.header-actions .primary-button:hover {
+  background: #f8fafc;
 }
 
 /* Main Content */
