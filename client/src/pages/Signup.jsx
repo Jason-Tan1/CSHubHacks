@@ -109,12 +109,15 @@ function Signup({ onSignup }) {
         <div className="signup-badge">SMART ADDRESS MATCH</div>
         <h1 className="signup-title">Protecting your<br />home starts here.</h1>
         <p className="signup-desc">
-          We analyze local ordinances based on your specific address to find lease violations that generic tools miss.
+          Every renter deserves a safe place to live. We help you understand the condition of your home,
+          what your landlord is obligated to fix, and how to take action if something isn’t right.
         </p>
         <div className="signup-footer-row">
-          <span>✓ Bank-level encryption</span>
-          <span>•</span>
-          <span>No credit card required</span>
+          <span>✓ Know what your landlord is responsible for</span>
+          <span>✓ Identify hidden safety issues early</span>
+          <span>✓ Get plain-language explanations</span>
+          <span>✓ Prepare evidence if you need it later</span>
+          <span>✓ Understand your rights without calling a lawyer</span>
         </div>
       </div >
       <div className="signup-right">
