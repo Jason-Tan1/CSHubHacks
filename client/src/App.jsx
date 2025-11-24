@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup onSignup={handleSignup} />} />
-        <Route path="/app" element={signedUp ? <Home currentUser={currentUser} /> : <Navigate to="/signup" replace />} />
+        <Route path="/app" element={signedUp ? <Home currentUser={currentUser} /> : <Navigate to="/" replace />} />
       </Routes>
     </div>
   )

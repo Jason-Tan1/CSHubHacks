@@ -134,12 +134,13 @@ function GoogleMap({ location, legalClinics = [] }) {
           const lat = typeof place.geometry.location.lat === 'function' ? place.geometry.location.lat() : place.geometry.location.lat
           const lng = typeof place.geometry.location.lng === 'function' ? place.geometry.location.lng() : place.geometry.location.lng
           const pos = { lat, lng }
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${pos.lat},${pos.lng}`)}`
           // Use the teardrop pin SVG icon (red) instead of a numbered circle label
           const marker = new window.google.maps.Marker({ position: pos, map, title: place.name, icon: makePinIcon('#EA4335', 36) })
 
           const infowindow = new window.google.maps.InfoWindow({ content: `
                 <div style="padding:8px; max-width:240px; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;">
-                  <strong style="color:#268de6">${place.name}</strong>
+                  <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="color:#268de6; text-decoration:none; font-weight:700;">${place.name}</a>
                   <div style="color:#666; font-size:13px; margin-top:6px;">${place.vicinity || ''}</div>
                   ${place.rating ? `<div style="margin-top:6px; font-size:13px; color:#444;">⭐ ${place.rating}</div>` : ''}
                 </div>
