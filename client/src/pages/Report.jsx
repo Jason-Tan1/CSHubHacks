@@ -74,11 +74,9 @@ function Report({ report, onBack, onRescan }) {
   return (
     <>
       <div className="report-page">
-        <div className="report-topbar">
-          <div className="report-top-actions">
-            <button className="btn btn-ghost" onClick={onBack}>← Back</button>
-            <button className="btn btn-primary" onClick={onRescan}>New Scan</button>
-          </div>
+        <div className="report-float-actions">
+          <button className="btn btn-ghost" onClick={onBack}>← Back</button>
+          <button className="btn btn-primary" onClick={onRescan}>New Scan</button>
         </div>
 
         <div className="report-shell">
