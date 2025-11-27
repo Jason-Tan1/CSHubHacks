@@ -1,4 +1,7 @@
 # 🛡️ TenantShield
+🏆 1st Place ($400) at CSHub Hack Day Hackathon
+
+🏆 Best Use of Gemini AI
 
 **Take a photo. Know your rights. Get justice.**
 
@@ -27,7 +30,6 @@ TenantShield is a web application powered by Google's Gemini AI that empowers te
 5.  **View Report**: The user receives a detailed, actionable report to help them resolve their housing issue.
 
 ## 🛠️ Tech Stack
-
 - **Frontend**: React.js, CSS3
 - **AI Model**: [Google Gemini 2.5 Flash](https://deepmind.google/technologies/gemini/)
 - **Backend**: Express.js, Node.js, 
