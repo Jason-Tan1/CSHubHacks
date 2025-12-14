@@ -5,10 +5,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash-latest';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CLIENT_URL || '*', // Set CLIENT_URL in Vercel env vars to your frontend URL
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '15mb' }));
 
 // Routes
@@ -25,6 +29,12 @@ app.post('/api/analyze', async (req, res) => {
 
   if (!images?.length) {
     return res.status(400).json({ error: 'No images were provided for analysis' });
+  }
+
+  // Check total size
+  const totalSize = JSON.stringify(images).length;
+  if (totalSize > 12000000) { // ~12MB
+    return res.status(413).json({ error: 'Images too large. Please reduce image size or quantity.' });
   }
 
   const imageParts = images

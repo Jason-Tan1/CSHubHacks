@@ -178,7 +178,6 @@ function Signup({ onSignup }) {
           </button>
           <div className="signup-form-footer-row">
             <span className="signup-form-footer-left">✓ Secure Connection</span>
-            <span>Step 1 of 2</span>
           </div>
         </form>
       </div>
