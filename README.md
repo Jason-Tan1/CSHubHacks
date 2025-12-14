@@ -60,12 +60,34 @@ To get the frontend of TenantShield running locally, follow these steps.
 
 3.  **Set up environment variables:**
 
-    Create a `.env` file in the `/client` directory and add the URL of your backend server.
+    Create a `.env` file in the `/client` directory:
 
     ```env
     # /client/.env
 
-    VITE_API_URL=http://localhost:5001
+    # Leave empty for local development (Vite proxy handles it)
+    # For production: set to your deployed server URL
+    VITE_API_URL=
+
+    # Google Maps API Key (required for maps and address autocomplete)
+    VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+    ```
+
+    Create a `.env` file in the `/server` directory:
+
+    ```env
+    # /server/.env
+
+    PORT=5001
+
+    # Google Gemini API Key (required) - Get at: https://aistudio.google.com/app/apikey
+    GEMINI_API_KEY=your_gemini_api_key_here
+
+    # Gemini Model (optional, defaults to gemini-2.0-flash)
+    GEMINI_MODEL=gemini-2.0-flash
+
+    # Google Places API Key (optional)
+    GOOGLE_PLACES_API_KEY=your_google_places_api_key_here
     ```
 
 4.  **Run the development server:**

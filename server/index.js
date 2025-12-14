@@ -1,28 +1,53 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const path = require('path');
+
+// Load environment variables from .env file in the same directory as this script
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+// Use gemini-2.0-flash as the default - it's the latest stable multimodal model
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
-// Middleware
-const corsOptions = {
-  origin: process.env.CLIENT_URL || '*', // Set CLIENT_URL in Vercel env vars to your frontend URL
+// Middleware - Allow all origins for Vercel deployment (or set CLIENT_URL for specific origin)
+app.use(cors({
+  origin: process.env.CLIENT_URL || true, // Allow all origins or set specific in env vars
   credentials: true,
-};
-app.use(cors(corsOptions));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 app.use(express.json({ limit: '15mb' }));
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'TenantShield API is running' });
+});
 
 // Routes
 app.get('/api', (req, res) => {
   res.json({ message: 'Welcome to the API' });
 });
 
+// Health check for API
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    hasGeminiKey: !!GEMINI_API_KEY,
+    model: GEMINI_MODEL 
+  });
+});
+
 app.post('/api/analyze', async (req, res) => {
+  console.log('Received analyze request');
+  
   if (!GEMINI_API_KEY) {
-    return res.status(500).json({ error: 'Missing Gemini API key on server' });
+    console.error('Missing GEMINI_API_KEY environment variable');
+    return res.status(500).json({ error: 'Missing Gemini API key on server. Please set GEMINI_API_KEY environment variable.' });
   }
 
   const { images, details, location } = req.body;
@@ -92,6 +117,8 @@ Tenant notes: ${details || 'No additional details provided.'}
 If you are unsure of exact laws, provide the best general housing safety laws for the given location. Keep lists concise.`;
 
   try {
+    console.log(`Calling Gemini API with model: ${GEMINI_MODEL}`);
+    
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
@@ -115,11 +142,26 @@ If you are unsure of exact laws, provide the best general housing safety laws fo
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Gemini API error:', errorText);
-      return res.status(502).json({ error: 'Gemini request failed', details: errorText });
+      console.error('Gemini API error:', response.status, errorText);
+      
+      // Parse error for better messaging
+      let errorMessage = 'Gemini request failed';
+      try {
+        const errorJson = JSON.parse(errorText);
+        if (errorJson.error?.message) {
+          errorMessage = errorJson.error.message;
+        }
+      } catch (e) {
+        // Use raw error text if not JSON
+        errorMessage = errorText.substring(0, 200);
+      }
+      
+      return res.status(502).json({ error: errorMessage, details: errorText });
     }
 
     const data = await response.json();
+    console.log('Gemini API response received');
+    
     const rawContent =
       data?.candidates?.[0]?.content?.parts
         ?.map((part) => part?.text)
@@ -132,6 +174,7 @@ If you are unsure of exact laws, provide the best general housing safety laws fo
       parsed = rawContent ? JSON.parse(rawContent) : null;
     } catch (err) {
       console.error('Gemini JSON parse error:', err.message);
+      console.error('Raw content:', rawContent.substring(0, 500));
     }
 
     const summary =
@@ -145,7 +188,12 @@ If you are unsure of exact laws, provide the best general housing safety laws fo
       '';
 
     if (!summary) {
-      return res.status(500).json({ error: 'Gemini did not return any analysis' });
+      // Check for safety blocks or other issues
+      const finishReason = data?.candidates?.[0]?.finishReason;
+      if (finishReason === 'SAFETY') {
+        return res.status(400).json({ error: 'The image was blocked by safety filters. Please try a different image.' });
+      }
+      return res.status(500).json({ error: 'Gemini did not return any analysis. Please try again.' });
     }
 
     const report = {
@@ -160,6 +208,7 @@ If you are unsure of exact laws, provide the best general housing safety laws fo
       raw: rawContent,
     };
 
+    console.log('Analysis complete, sending response');
     res.json({ summary, report });
   } catch (error) {
     console.error('Gemini analysis failed:', error);
@@ -215,7 +264,7 @@ app.post('/clinics', async (req, res) => {
     const clinics = rawResults
       .map((r) => {
         const p = r.place || r;
-        const displayName = p?.displayName || p?.name || '';
+        const displayName = p?.displayName?.text || p?.displayName || p?.name || '';
         const formattedAddress = p?.formattedAddress || p?.formatted_address || '';
         const locationObj = p?.location || p?.geometry || {};
         const latitude = locationObj?.latitude ?? locationObj?.lat ?? (locationObj?.latLng?.latitude ?? null);
@@ -239,6 +288,9 @@ app.post('/clinics', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+// Bind to 0.0.0.0 for container/cloud deployments
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Gemini API Key: ${GEMINI_API_KEY ? 'Set ✓' : 'NOT SET ✗'}`);
+  console.log(`Gemini Model: ${GEMINI_MODEL}`);
 });

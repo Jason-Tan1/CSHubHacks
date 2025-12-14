@@ -22,7 +22,8 @@ function Home({ currentUser }) {
     }
   }, [currentUser])
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+  // In development, Vite proxy handles /api routes. In production, use VITE_API_URL.
+  const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files)
@@ -164,6 +165,8 @@ function Home({ currentUser }) {
     setReportData(null)
 
     try {
+      console.log('Sending analyze request to:', `${API_BASE_URL}/api/analyze`)
+      
       const response = await fetch(`${API_BASE_URL}/api/analyze`, {
         method: 'POST',
         headers: {
@@ -175,6 +178,14 @@ function Home({ currentUser }) {
           location
         })
       })
+
+      // Handle non-JSON responses (like network errors or HTML error pages)
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text()
+        console.error('Non-JSON response:', text.substring(0, 200))
+        throw new Error('Server returned an invalid response. Please check if the backend is running.')
+      }
 
       const result = await response.json()
 
@@ -198,7 +209,13 @@ function Home({ currentUser }) {
       setAnalysis(result.summary || 'Gemini returned an empty response.')
       setView('report')
     } catch (error) {
-      setErrorMessage(error.message || 'Something went wrong while scanning.')
+      console.error('Scan error:', error)
+      // Provide more helpful error messages
+      let message = error.message || 'Something went wrong while scanning.'
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
+        message = 'Cannot connect to the server. Please check if the backend is running.'
+      }
+      setErrorMessage(message)
     } finally {
       setIsScanning(false)
     }
