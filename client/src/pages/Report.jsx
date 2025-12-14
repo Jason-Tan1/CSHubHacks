@@ -74,14 +74,10 @@ function Report({ report, onBack, onRescan }) {
   return (
     <>
       <div className="report-page">
-<<<<<<< HEAD
-       
-=======
         <div className="report-float-actions">
           <button className="btn btn-ghost" onClick={onBack}>← Back</button>
           <button className="btn btn-primary" onClick={onRescan}>New Scan</button>
         </div>
->>>>>>> 802fd3d6806b4fb0c85e8496804b206d6b22f2a7
 
         <div className="report-shell">
           <aside className="report-side">

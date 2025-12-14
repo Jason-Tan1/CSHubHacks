@@ -135,29 +135,19 @@
 
 .home-images-grid {
   display: grid;
-<<<<<<< HEAD
   /* side-by-side tiles; larger min so two images sit nicely side-by-side */
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-top: 14px;
   width: 100%;
   max-width: 960px;
-=======
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-top: 14px;
   grid-auto-rows: 1fr;
->>>>>>> 802fd3d6806b4fb0c85e8496804b206d6b22f2a7
 }
 
 .home-image-preview-item {
   /* enforce square tiles using aspect-ratio and remove padding/background */
   width: 100%;
-<<<<<<< HEAD
   aspect-ratio: 1 / 1;
-=======
-  padding-bottom: 75%;
->>>>>>> 802fd3d6806b4fb0c85e8496804b206d6b22f2a7
   border-radius: 12px;
   overflow: hidden;
   background: transparent;
